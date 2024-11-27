@@ -20,6 +20,12 @@
 
 # video_file = open("./5mins_audio.mp3", "rb")
 
-# transcription = client.audio.transcriptions.create(model="whisper-1", file=video_file, response_format="json")
+# transcription = client.audio.transcriptions.create(
+#     model="whisper-1",
+#     file=video_file, 
+#     response_format="verbose_json",
+#     timestamp_granularities=["segment"]
+#     )
 
-# print(transcription.text)
+# print(transcription.segments)
+
