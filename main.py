@@ -4,12 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(threadName)s - %(levelname)s - %(message)s')
-
-
 
 app = FastAPI(title="auto-publisher-backend", version="0.1.0")
 origins = [
