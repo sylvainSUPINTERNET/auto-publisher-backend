@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
-@router.get("/ai")
+@router.post("/wait")
 async def clipping():
 
     # TODO : transcribe ( whisper ) 
