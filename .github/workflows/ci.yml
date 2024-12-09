@@ -3,9 +3,13 @@ on:
   push:
     branches:
       - master
+      - main
+      - develop
   pull_request:
     branches:
       - master
+      - main
+      - develop
 jobs:
   test:
     runs-on: ubuntu-latest
