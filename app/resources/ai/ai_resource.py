@@ -1,13 +1,16 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
+from infrastructure.rabbitmq_conn import RabbitMqClient
 
 router = APIRouter()
 
-@router.post("/wait")
+@router.get("/wait")
 async def clipping():
 
-    # TODO : transcribe ( whisper ) 
-    # TODO : use prompt with chatgpt
-    # Add text to the frame ( using pymovie ) 
+    rabbitmq_client = RabbitMqClient()
+
+
+    rabbitmq_client.get_conn().channel().basic_publish(exchange='', routing_key='yt_dl_queue', body='{"url": "https://www.youtube.com/watch?v=6v2L2UGZJAM"}')
+
     
     return JSONResponse(content={"message": "Hello World"}, status_code=200)

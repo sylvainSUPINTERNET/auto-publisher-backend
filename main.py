@@ -6,25 +6,22 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 from dotenv import load_dotenv
 import os
-import pika
+
+from infrastructure.rabbitmq_conn import RabbitMqClient
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(threadName)s - %(levelname)s - %(message)s')
 
 
-rabbitmq_connection = None
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
-        # rabbitmq_connection = pika.BlockingConnection(pika.URLParameters(f"{os.getenv('RABBIT_MQ_URL', '')}"))
-        # ch1  = rabbitmq_connection.channel()
-        # ch1.queue_declare(queue='hello')
-        # ch1.basic_publish(exchange='', routing_key='hello', body='Hello LLLLAAA!')
-
+        logging.info("Get rabbitmq connection ...")
+        rabbitmq_client = RabbitMqClient()
         logging.info(f"Starting the application")
         yield
     finally:
+        rabbitmq_client.close_conn()
         logging.info("Shutting down the application")
 
 app = FastAPI(title="auto-publisher-backend", version="0.1.0", root_path="/api/v1", lifespan=lifespan)
