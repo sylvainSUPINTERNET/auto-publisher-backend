@@ -24,7 +24,7 @@ jobs:
           pip install -r requirements.txt
       - name: Setup infrastruction cloudAMQP
         run: |
-          python infrastructure/ci/infrastructure_rabbitmq.py
+          python ./infrastructure/ci/infrastructure_rabbitmq.py
 
 # jobs:
 #   test:
