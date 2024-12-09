@@ -5,7 +5,6 @@ from app.resources.links import link_resource
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 from dotenv import load_dotenv
-import os
 
 from infrastructure.rabbitmq_conn import RabbitMqClient
 
