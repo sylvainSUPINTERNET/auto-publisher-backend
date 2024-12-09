@@ -1,0 +1,41 @@
+name: CI auto-publisher
+on:
+  push:
+    branches:
+      - master
+      - main
+      - develop
+  pull_request:
+    branches:
+      - master
+      - main
+      - develop
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Exemple"
+        run: echo "init infra!"
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest  # Choose the OS for the runner (Ubuntu, Windows, or macOS)
+
+#     # Steps to perform in the 'test' job
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2  # Checkout the repository code
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.8'  # Set up the Python version (modify according to your needs)
+
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install -r requirements.txt  # Assumes you have a requirements.txt file
+
+#       - name: Run tests
+#         run: |
+#           python -m unittest discover  # Runs tests using Python's unittest module
