@@ -1,50 +1,50 @@
-name: CI auto-publisher - infrastructure for RabbitMQ
-on:
-  push:
-    branches:
-      - master
-      - main
-      - develop
-  pull_request:
-    branches:
-      - master
-      - main
-      - develop
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Setup infrastruction cloudAMQP
-        run: |
-          python ./infrastructure/ci/infrastructure_rabbitmq.py
-
+# name: CI auto-publisher - infrastructure for RabbitMQ
+# on:
+#   push:
+#     branches:
+#       - master
+#       - main
+#       - develop
+#   pull_request:
+#     branches:
+#       - master
+#       - main
+#       - develop
 # jobs:
 #   test:
-#     runs-on: ubuntu-latest  # Choose the OS for the runner (Ubuntu, Windows, or macOS)
-
-#     # Steps to perform in the 'test' job
+#     runs-on: ubuntu-latest
 #     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v2  # Checkout the repository code
-
-#       - name: Set up Python
-#         uses: actions/setup-python@v2
+#       - uses: actions/checkout@v4
+#       - uses: actions/setup-python@v5
 #         with:
-#           python-version: '3.8'  # Set up the Python version (modify according to your needs)
-
+#           python-version: '3.13'
 #       - name: Install dependencies
 #         run: |
 #           python -m pip install --upgrade pip
-#           pip install -r requirements.txt  # Assumes you have a requirements.txt file
-
-#       - name: Run tests
+#           pip install -r requirements.txt
+#       - name: Setup infrastruction cloudAMQP
 #         run: |
-#           python -m unittest discover  # Runs tests using Python's unittest module
+#           python ./infrastructure/ci/infrastructure_rabbitmq.py
+
+# # jobs:
+# #   test:
+# #     runs-on: ubuntu-latest  # Choose the OS for the runner (Ubuntu, Windows, or macOS)
+
+# #     # Steps to perform in the 'test' job
+# #     steps:
+# #       - name: Checkout repository
+# #         uses: actions/checkout@v2  # Checkout the repository code
+
+# #       - name: Set up Python
+# #         uses: actions/setup-python@v2
+# #         with:
+# #           python-version: '3.8'  # Set up the Python version (modify according to your needs)
+
+# #       - name: Install dependencies
+# #         run: |
+# #           python -m pip install --upgrade pip
+# #           pip install -r requirements.txt  # Assumes you have a requirements.txt file
+
+# #       - name: Run tests
+# #         run: |
+# #           python -m unittest discover  # Runs tests using Python's unittest module
