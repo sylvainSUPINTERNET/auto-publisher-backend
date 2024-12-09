@@ -1,4 +1,4 @@
-name: CI auto-publisher
+name: CI auto-publisher - infra
 on:
   push:
     branches:
