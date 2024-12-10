@@ -18,6 +18,7 @@ class RabbitMqClient(object):
             for queue in queues_to_create:
                 chann.queue_declare(queue=queue, durable=True)
                 logging.info(f"  Queue {queue} declared (durable=True)")
+            chann.close()
         else:
             logging.info("RabbitMqClient instance already created, reuse connection")
 

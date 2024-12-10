@@ -7,6 +7,17 @@ from infrastructure.rabbitmq_conn import RabbitMqClient
 from infrastructure.rabbitmq_queues import RabbitMQQueueEnum
 
 
+"""
+TODO : flow expected 
+
+ - no auto ack 
+ - thread pool 
+ - new msg ? start a new thread and download video + ACK
+ - thread pool is full ? no ack, message stay in queue
+
+"""
+
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(threadName)s - %(levelname)s - %(message)s')
 load_dotenv()
 

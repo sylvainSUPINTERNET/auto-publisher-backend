@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from app.dto.links.link_dto import LinkDto
 import logging
+import json
 
 from yt_dlp import YoutubeDL
 import uuid
@@ -15,7 +16,12 @@ router = APIRouter()
 async def links(linkData: LinkDto):
     try:
         logging.info(f"Received link : {linkData.url}, publish to queue : {RabbitMQQueueEnum.YT_DL_QUEUE.value}")
-        RabbitMqClient().get_conn().channel().basic_publish(exchange='', routing_key=f'{RabbitMQQueueEnum.YT_DL_QUEUE.value}', body=f'{"url": "{linkData.url}"}')
+
+        channel = RabbitMqClient().get_conn().channel()
+        channel.basic_publish(exchange='', routing_key=f'{RabbitMQQueueEnum.YT_DL_QUEUE.value}', body=json.dumps({
+            "url": linkData.url
+        }))
+        channel.close()
         return JSONResponse(content={"message": f"{linkData.url}"}, status_code=200)
     except Exception as e:
         logging.error(str(e))
