@@ -13,6 +13,7 @@ TODO : flow expected
  - no auto ack 
  - thread pool 
  - new msg ? start a new thread and download video + ACK
+ - error ? nack
  - thread pool is full ? no ack, message stay in queue
 
 """
