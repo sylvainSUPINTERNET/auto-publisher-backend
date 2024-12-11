@@ -3,3 +3,5 @@ python-dotenv==1.0.1
 moviepy==2.1.1
 yt-dlp==2024.11.18
 pika==1.3.2
+celery==5.4.0
+flower==2.0.1
