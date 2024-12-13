@@ -16,6 +16,12 @@ fastapi run
 
 ````
 
+# Start workers
+
+```` bash 
+cd workers && celery -A app_worker worker --loglevel=info --concurrency=8
+````
+
 
 # Start consumers 
 
