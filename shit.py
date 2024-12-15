@@ -16,5 +16,6 @@ from workers.app_worker import yt_download_video_task, whisper_transcribe
 # task_dl_result.get()
 
 
-res = (yt_download_video_task.s("https://www.youtube.com/shorts/tFKdZPvyOc8?feature=share") | whisper_transcribe.s()).apply_async()
+res = (yt_download_video_task.s("https://www.youtube.com/shorts/tFKdZPvyOc8?feature=share") 
+       | whisper_transcribe.s()).apply_async()
 print(res.get())

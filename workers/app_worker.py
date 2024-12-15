@@ -9,21 +9,20 @@ app = Celery('tasks',
              broker=f"{os.getenv('RABBIT_MQ_URL')}",
              backend="rpc://") # use redis or something else, rpc is not scalable
 
-# @app.task(queue="EXAMPLE_Q")
-# def add(x, y):
-#     return x + y
-
 
 """
-    First task must be called, download media from youtube
+     1°) task must be called, download media from youtube
 """
 @app.task(queue="yt.download")
 def yt_download_video_task(link):
     dl_url = download_yt_video(link)
-    # TODO : 
+    # TODO : upload somewhere
     return dl_url
 
 
+"""
+    2° ) task must be called, transcribe the media ( using word, not segment for "karaoke" approach)
+"""
 @app.task(queue="whisper.transcribe")
 def whisper_transcribe(dl_url):
     print(f"whisper this shiet : {dl_url}")
