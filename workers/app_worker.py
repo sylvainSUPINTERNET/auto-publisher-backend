@@ -13,6 +13,9 @@ def add(x, y):
     return x + y
 
 
+@app.task(queue="yt.download")
+def yt_download_media():
+    return 11
 
 # from celery import Celery, chain
 # from celery.result import AsyncResult
