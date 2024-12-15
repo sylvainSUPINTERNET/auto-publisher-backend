@@ -1,6 +1,7 @@
 from celery import Celery
 import os
 from dotenv import load_dotenv
+from domain.services.worker_yt_download.yt_task_service import download_yt_video
 
 load_dotenv()
 
@@ -8,14 +9,25 @@ app = Celery('tasks',
              broker=f"{os.getenv('RABBIT_MQ_URL')}",
              backend="rpc://") # use redis or something else, rpc is not scalable
 
-@app.task(queue="EXAMPLE_Q")
-def add(x, y):
-    return x + y
+# @app.task(queue="EXAMPLE_Q")
+# def add(x, y):
+#     return x + y
 
 
+"""
+    First task must be called, download media from youtube
+"""
 @app.task(queue="yt.download")
-def yt_download_media():
-    return 11
+def yt_download_video_task(link):
+    dl_url = download_yt_video(link)
+    # TODO : 
+    return dl_url
+
+
+@app.task(queue="whisper.transcribe")
+def whisper_transcribe(dl_url):
+    print("whisper this shiet")
+    pass
 
 # from celery import Celery, chain
 # from celery.result import AsyncResult
