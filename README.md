@@ -24,7 +24,7 @@ fastapi run
 celery -A workers.app_worker worker --loglevel=debug -P solo -Q yt.download
 
 # UNIX
-celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.download,...
+celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.download,whisper.transcribe
 
 
 # # use default queue ( celery named )

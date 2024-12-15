@@ -26,8 +26,25 @@ def yt_download_video_task(link):
 
 @app.task(queue="whisper.transcribe")
 def whisper_transcribe(dl_url):
-    print("whisper this shiet")
-    pass
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+    print(f"whisper this shiet : {dl_url}")
+
+    return "end whisper "
 
 # from celery import Celery, chain
 # from celery.result import AsyncResult
