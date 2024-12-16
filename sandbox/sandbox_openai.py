@@ -18,14 +18,18 @@
 # """
 
 
-# video_file = open("./5mins_audio.mp3", "rb")
+# # video_file = open("./5mins_audio.mp3", "rb")
+# video_file = open("./test_yom.webm", "rb")
 
 # transcription = client.audio.transcriptions.create(
 #     model="whisper-1",
 #     file=video_file, 
 #     response_format="verbose_json",
-#     timestamp_granularities=["segment"]
+#     # timestamp_granularities=["segment"] # word
+#     timestamp_granularities=["word"] 
 #     )
 
-# print(transcription.segments)
+
+# print(transcription)
+# print(transcription.segments) # None with word granularity
 

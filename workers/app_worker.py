@@ -15,7 +15,7 @@ app = Celery('tasks',
 """
 @app.task(queue="yt.download")
 def yt_download_video_task(link):
-    dl_url = download_yt_video(link)
+    dl_url = "download.mp4" # download_yt_video(link)
     # TODO : upload somewhere
     return dl_url
 
@@ -26,24 +26,10 @@ def yt_download_video_task(link):
 @app.task(queue="whisper.transcribe")
 def whisper_transcribe(dl_url):
     print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
-    print(f"whisper this shiet : {dl_url}")
+    return "end whisper"
 
-    return "end whisper "
+
+ 
 
 # from celery import Celery, chain
 # from celery.result import AsyncResult

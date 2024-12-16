@@ -2,6 +2,9 @@
 
 ```` bash
 
+# conda or venv
+python -m venv auto-publisher-env
+
 python -m pip install -r requirements.txt
 
 ````	
@@ -21,7 +24,7 @@ fastapi run
 ```` bash 
 
 # Windows
-celery -A workers.app_worker worker --loglevel=debug -P solo -Q yt.download
+celery -A workers.app_worker worker --loglevel=debug -P solo -Q yt.download,whisper.transcribe
 
 # UNIX
 celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.download,whisper.transcribe
@@ -33,6 +36,8 @@ celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.downl
 
 # # Feel free to add queues names instead of using default celery  ( define at @task decorator)
 # cd workers ;; celery -A app_worker worker --loglevel=debug -P solo -Q EXAMPLE_Q
+
+
 
 
 
