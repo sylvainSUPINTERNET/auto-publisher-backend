@@ -1,6 +1,7 @@
 from celery import Celery
 import os
 from dotenv import load_dotenv
+from domain.services.worker_openai.transcribe_service import transcribe
 from domain.services.worker_yt_download.yt_task_service import download_yt_video
 
 load_dotenv()
@@ -15,18 +16,17 @@ app = Celery('tasks',
 """
 @app.task(queue="yt.download")
 def yt_download_video_task(link):
-    dl_url = "download.mp4" # download_yt_video(link)
-    # TODO : upload somewhere
-    return dl_url
+    video_uuid = download_yt_video(link)
+    return video_uuid
 
 
 """
     2° ) task must be called, transcribe the media ( using word, not segment for "karaoke" approach)
 """
 @app.task(queue="whisper.transcribe")
-def whisper_transcribe(dl_url):
-    print(f"whisper this shiet : {dl_url}")
-    return "end whisper"
+def whisper_transcribe(video_uuid:str):
+    result = transcribe(video_uuid)
+    return result
 
 
  
