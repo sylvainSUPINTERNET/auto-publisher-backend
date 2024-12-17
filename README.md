@@ -38,11 +38,6 @@ celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.downl
 # cd workers ;; celery -A app_worker worker --loglevel=debug -P solo -Q EXAMPLE_Q
 
 
-
-
-
-
-
 # UNIX
 cd workers && celery -A app_worker worker --loglevel=debug --concurrency=8
 ````
@@ -56,3 +51,6 @@ python -m consumers.yt_dl_consumer
 
 ```
 
+
+
+https://gist.github.com/sylvainSUPINTERNET/f78ed3243e9d4c1e9f782b8e2a47e536
