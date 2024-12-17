@@ -29,6 +29,11 @@ def whisper_transcribe(video_uuid:str):
     return result
 
 
+"""
+    3° ) 
+"""
+
+
  
 
 # from celery import Celery, chain
