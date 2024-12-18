@@ -39,15 +39,17 @@ def transcribe(video_uuid:str):
                 timestamp_granularities=["word"]
             )
             logging.info(f"transcription_verbose : {transcription_verbose}")
-            return {
+
+            result = {
                 "duration": transcription_verbose.duration,
                 "language": transcription_verbose.language,
                 "text": transcription_verbose.text,
                 "words": [
-                    {"word": transcription_word.word, "start": transcription_word.start, "end": transcription_word.end}
+                    {"word": transcription_word["word"], "start": transcription_word["start"], "end": transcription_word["end"]}
                     for transcription_word in transcription_verbose.words
-                   ]            
-                }
+                ]
+            }
+            return result
     except Exception as e:
         logging.error(f"Error during transcription : {e}")
 
