@@ -24,10 +24,10 @@ fastapi run
 ```` bash 
 
 # Windows
-celery -A workers.app_worker worker --loglevel=debug -P solo -Q yt.download,whisper.transcribe
+celery -A workers.app_worker worker --loglevel=debug -P solo -Q yt.download,whisper.transcribe,groq.completion
 
 # UNIX
-celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.download,whisper.transcribe
+celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.download,whisper.transcribe,groq.completion
 
 
 # # use default queue ( celery named )

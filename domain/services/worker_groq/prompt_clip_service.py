@@ -1,5 +1,18 @@
 
-def prompt_generate_clips(transcript_result):
+from domain.types.base_type import TranscriptionResultWordsGranularity
+
+def format_transcription_result(transcript_result:TranscriptionResultWordsGranularity)->str:
+    # TODO clean data to have something similar to the prompt provided
+    return ""
+
+def prompt_generate_clips(transcript_result:TranscriptionResultWordsGranularity):
+
+    formatted = format_transcription_result(transcript_result)
+
+    # TODO => use formatted into prompt as variable
+    # TODO => add in prompt something to regroup word
+    # TODO => add another task to add highlight on text for each frame of video
+
     prompt = """
     You are an expert video editor who can read video transcripts and perform video editing.
     Given a transcript with segments, your task is to identify all the conversations related to a user query. 
@@ -13,8 +26,11 @@ def prompt_generate_clips(transcript_result):
     4. Choose multiple conversations from the transcript that are relevant to the user query. 
     5. Match the start and end time of the conversations using the segment timestamps from the transcript. 
     6. The conversations should be a direct part of the video and should not be out of context. 
+
+
     
     Output format: {{ 'conversations': [{{'start': 's1', 'end': 'e1'}}, {{'start': 's2','end': 'e2'}}] }}. 
+    
     
     Transcript : 00:00:00 - 00:00:10 : Bonjour et bienvenue dans cette vidéo ! Aujourd'hui, nous allons vous montrer comment préparer un délicieux smoothie aux fruits. Ce smoothie est parfait pour commencer la journée. 00:00:10 - 00:00:20 : Pour cette recette, vous aurez besoin de quelques ingrédients de base : 1 banane, 100g de fraises, 200ml de lait d'amande, et quelques glaçons. Vous pouvez aussi ajouter du miel si vous aimez un peu plus sucré. 00:00:20 - 00:00:30 : La première étape consiste à mettre tous les ingrédients dans un mixeur. Commencez par la banane, puis ajoutez les fraises et le lait d'amande. 00:00:30 - 00:00:40 : Une fois les ingrédients dans le mixeur, ajoutez les glaçons. Cela rendra votre smoothie bien frais. Vous pouvez ajuster la quantité de glaçons selon votre préférence. 00:00:40 - 00:00:50 : Ensuite, mixez tous les ingrédients à haute vitesse pendant environ 30 secondes, jusqu'à ce que la consistance soit lisse et crémeuse. 00:00:50 - 00:01:00 : Vous pouvez voir que la texture est parfaite, crémeuse et onctueuse. Si vous trouvez que la consistance est trop épaisse, n'hésitez pas à ajouter un peu plus de lait d'amande. 00:01:00 - 00:01:10 : Une fois votre smoothie prêt, vous pouvez le verser dans un verre. Vous pouvez aussi ajouter quelques morceaux de fruits sur le dessus pour la décoration. 00:01:10 - 00:01:20 : Pour une touche encore plus gourmande, vous pouvez ajouter des graines de chia ou un peu de granola sur le dessus. Cela ajoute de la texture et des bienfaits supplémentaires pour la santé. 00:01:20 - 00:01:30 : Et voilà, votre smoothie aux fruits est prêt ! Il est non seulement délicieux, mais aussi très sain. Vous pouvez le déguster immédiatement ou le mettre au réfrigérateur pour plus tard. 00:01:30 - 00:01:40 : Merci d'avoir regardé cette vidéo. J'espère que vous allez essayer cette recette chez vous. N'oubliez pas de vous abonner à notre chaîne pour plus de recettes saines et rapides. À bientôt ! - user query : viral. return only the result, no talking
     """

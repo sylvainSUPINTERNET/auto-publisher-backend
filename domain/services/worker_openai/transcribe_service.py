@@ -4,6 +4,8 @@ import glob
 import logging
 from openai import OpenAI
 
+from domain.types.base_type import TranscriptionResultWordsGranularity
+
 
 # NOTE : limit media 
 """
@@ -15,7 +17,7 @@ openai.APIStatusError: Error code: 413 - {'error': {'message': '413: Maximum con
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(threadName)s - %(levelname)s - %(message)s')
 
 
-def transcribe(video_uuid:str):
+def transcribe(video_uuid:str)->TranscriptionResultWordsGranularity:
     try: 
         client = OpenAI(api_key=f"{os.getenv('OPEN_AI_SECRET_KEY', None)}")
 
@@ -41,11 +43,11 @@ def transcribe(video_uuid:str):
             logging.info(f"transcription_verbose : {transcription_verbose}")
 
             result = {
-                "duration": transcription_verbose.duration,
-                "language": transcription_verbose.language,
-                "text": transcription_verbose.text,
+                "duration": f"{transcription_verbose.duration}",
+                "language": f"{transcription_verbose.language}",
+                "text": f"{transcription_verbose.text}",
                 "words": [
-                    {"word": transcription_word["word"], "start": transcription_word["start"], "end": transcription_word["end"]}
+                    {"word": f"{transcription_word['word']}", "start": f"{transcription_word['start']}", "end": f"{transcription_word['end']}" }
                     for transcription_word in transcription_verbose.words
                 ]
             }

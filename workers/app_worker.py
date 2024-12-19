@@ -1,8 +1,10 @@
 from celery import Celery
 import os
 from dotenv import load_dotenv
+from domain.services.worker_groq.prompt_clip_service import prompt_generate_clips
 from domain.services.worker_openai.transcribe_service import transcribe
 from domain.services.worker_yt_download.yt_task_service import download_yt_video
+from domain.types.base_type import TranscriptionResultWordsGranularity
 
 load_dotenv()
 
@@ -25,15 +27,16 @@ def yt_download_video_task(link):
 """
 @app.task(queue="whisper.transcribe")
 def whisper_transcribe(video_uuid:str):
-    result = transcribe(video_uuid)
-    return result
+    transcription:TranscriptionResultWordsGranularity = transcribe(video_uuid)
+    return transcription
 
 
 """
-    3° ) 
+    3° ) task must be called, generate prompt clips from the transcription provided
 """
-
-
+@app.task(queue="groq.completion")
+def groq_completion(transcription:TranscriptionResultWordsGranularity):
+    prompt_generate_clips(transcription)
  
 
 # from celery import Celery, chain
