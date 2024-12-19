@@ -1,3 +1,21 @@
+def test_build_prompt():
+    input = {
+        "duration": "32.0",
+        "language": "french",
+        "text": "Quand je raconte mon histoire, c'est que j'ai eu ce moment de réalisation quand j'avais genre 7-8 ans, où je suis allé vivre une semaine ou deux semaines, je ne sais plus combien de temps c'était, chez un pote. Et mon pote, ses parents, ils avaient un cabinet d'architecture. J'ai comparé ma vie et sa vie. À ce moment-là, mes parents, il y avait un peu de problèmes à la maison, il y avait des problèmes d'études, on n'avait pas beaucoup d'argent. Et donc du coup, j'ai eu un peu ce contraste entre les deux vies. Et je me suis dit, ah, en fait, je suis pauvre. Et ah, en fait, quand t'as de l'argent, c'est mieux. Et donc, depuis que je suis gamin",
+        "words": [
+            {"word": "Quand", "start": "0.0", "end": "0.08"},
+            {"word": "je", "start": "0.08", "end": "0.14"},
+            {"word": "raconte", "start": "0.14", "end": "0.22"},
+            {"word": "mon", "start": "0.22", "end": "0.27"},
+            {"word": "histoire", "start": "0.27", "end": "0.35"}
+        ]
+    }
+
+    
+
+
+
 # # content of test_sample.py
 # def inc(x):
 #     return x + 1
