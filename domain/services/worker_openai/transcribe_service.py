@@ -3,6 +3,7 @@ import os
 import glob
 import logging
 from openai import OpenAI
+import json
 
 from domain.types.base_type import TranscriptionResultWordsGranularity
 
@@ -38,7 +39,7 @@ def transcribe(video_uuid:str)->TranscriptionResultWordsGranularity:
                 model="whisper-1",
                 file=audio_file,  # Passez le fichier ouvert en mode binaire
                 response_format="verbose_json",
-                timestamp_granularities=["word"]
+                timestamp_granularities=["word", "segment"]
             )
             logging.info(f"transcription_verbose : {transcription_verbose}")
 
@@ -51,6 +52,9 @@ def transcribe(video_uuid:str)->TranscriptionResultWordsGranularity:
                     for transcription_word in transcription_verbose.words
                 ]
             }
+            
+            logging.info(json.dumps(result, indent=4))
+                
             return result
     except Exception as e:
         logging.error(f"Error during transcription : {e}")

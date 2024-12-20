@@ -1,6 +1,9 @@
 from yt_dlp import YoutubeDL
 import uuid
 
+
+# TODO => check quality etc to reduce cost
+
 def download_yt_video(link:str)->str:
     video_uuid = str(uuid.uuid4())
     options = {

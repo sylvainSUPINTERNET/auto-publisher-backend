@@ -42,14 +42,14 @@ celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.downl
 cd workers && celery -A app_worker worker --loglevel=debug --concurrency=8
 ````
 
+# START debug
 
-# Start consumers 
+```` PowerShell
+$env:ENV="debug"  # export ENV=debug
 
-```bash
-# Package name
-python -m consumers.yt_dl_consumer
+python shit.py
 
-```
+````
 
 
 

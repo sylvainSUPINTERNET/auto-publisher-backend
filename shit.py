@@ -16,7 +16,9 @@ from workers.app_worker import yt_download_video_task, whisper_transcribe
 # task_dl_result.get()
 
 
-res = (yt_download_video_task.s("https://www.youtube.com/watch?v=VGL3RVzaTYA") 
+
+# https://www.youtube.com/watch?v=VGL3RVzaTYA
+res = (yt_download_video_task.s("https://youtu.be/WrE4D-uu7YA")  # ==> TODO must be less than 10mins ?
        | whisper_transcribe.s()).apply_async()
 print(res.get())
 
