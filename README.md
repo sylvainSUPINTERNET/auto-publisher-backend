@@ -51,6 +51,11 @@ python shit.py
 
 ````
 
+# TEST
+
+```` bash
+pytest -s
+````
 
 
 https://gist.github.com/sylvainSUPINTERNET/f78ed3243e9d4c1e9f782b8e2a47e536
