@@ -47,36 +47,18 @@ def transcribe(video_uuid:str)->TranscriptionResultWordsGranularity:
                 "duration": f"{transcription_verbose.duration}",
                 "language": f"{transcription_verbose.language}",
                 "text": f"{transcription_verbose.text}",
+                "segments": [
+                    {"start": f"{segment.start}", "end": f"{segment.end}", "text": f"{segment.text}"}
+                    for segment in transcription_verbose.segments
+                ],
                 "words": [
-                    {"word": f"{transcription_word['word']}", "start": f"{transcription_word['start']}", "end": f"{transcription_word['end']}" }
-                    for transcription_word in transcription_verbose.words
+                    {"start": f"{word.start}", "end": f"{word.end}", "word": f"{word.word}"}
+                    for word in transcription_verbose.words
                 ]
             }
-            
+
             logging.info(json.dumps(result, indent=4))
                 
             return result
     except Exception as e:
         logging.error(f"Error during transcription : {e}")
-
-
-# # video_file = open("./5mins_audio.mp3", "rb")
-# video_file = open("./test_yom.webm", "rb")
-
-# transcription = client.audio.transcriptions.create(
-#     model="whisper-1",
-#     file=video_file, 
-#     response_format="verbose_json",
-#     # timestamp_granularities=["segment"] # word
-#     timestamp_granularities=["word"] 
-#     )
-
-
-# print(transcription)
-# print(transcription.segments) # None with word granularity
-
-
-# def get_transcription(transcription):
-#     if transcription.status == "completed":
-#         return transcription.text
-#     return None
