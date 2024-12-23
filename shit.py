@@ -1,4 +1,4 @@
-from workers.app_worker import yt_download_video_task, whisper_transcribe
+from workers.app_worker import yt_download_video_task, whisper_transcribe, groq_completion
 
 # result = add.delay(4, 4)
 # print(result.get())
@@ -18,8 +18,10 @@ from workers.app_worker import yt_download_video_task, whisper_transcribe
 
 
 # https://www.youtube.com/watch?v=VGL3RVzaTYA
-res = (yt_download_video_task.s("https://youtu.be/WrE4D-uu7YA")  # ==> TODO must be less than 10mins ?
-       | whisper_transcribe.s()).apply_async()
+res = (
+       yt_download_video_task.s("https://youtu.be/WrE4D-uu7YA")  # ==> TODO must be less than 10mins ?
+       | whisper_transcribe.s()
+       | groq_completion.s()).apply_async()
 print(res.get())
 
 # res = (whisper_transcribe.s("d7753b76-b381-4ce0-81dc-cca16f1798d8")).apply_async()

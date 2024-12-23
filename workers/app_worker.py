@@ -1,16 +1,21 @@
 from celery import Celery
 import os
 from dotenv import load_dotenv
-from domain.services.worker_groq.prompt_clip_service import prompt_generate_clips
+from domain.services.worker_groq.prompt_clip_service import chat_completions
 from domain.services.worker_openai.transcribe_service import transcribe
 from domain.services.worker_yt_download.yt_task_service import download_yt_video
-from domain.types.base_type import TranscriptionResultWordsGranularity
+from domain.types.base_type import TranscriptionWordAndSegments
+import logging
+import json
+
 
 load_dotenv()
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(threadName)s - %(levelname)s - %(message)s')
+
 app = Celery('tasks', 
              broker=f"{os.getenv('RABBIT_MQ_URL')}",
-             backend="rpc://") # use redis or something else, rpc is not scalable
+             backend="rpc://") # TODO use redis or something else, rpc is not scalable, it's just create dogshit temp queue ( just for testing purpose)
 
 
 """
@@ -27,7 +32,7 @@ def yt_download_video_task(link):
 """
 @app.task(queue="whisper.transcribe")
 def whisper_transcribe(video_uuid:str):
-    transcription:TranscriptionResultWordsGranularity = transcribe(video_uuid)
+    transcription:TranscriptionWordAndSegments = transcribe(video_uuid)
     return transcription
 
 
@@ -35,9 +40,18 @@ def whisper_transcribe(video_uuid:str):
     3° ) task must be called, generate prompt clips from the transcription provided
 """
 @app.task(queue="groq.completion")
-def groq_completion(transcription:TranscriptionResultWordsGranularity):
-    prompt_generate_clips(transcription)
- 
+def groq_completion(transcription:TranscriptionWordAndSegments):
+    json_result:dict = chat_completions(transcription)
+
+    logging.debug(json.dumps(json_result, indent=4))
+
+    return json_result
+
+"""
+    4°) Create clip with cool effect
+"""
+# TODO => pymovie mapping word with segment to highlight
+
 
 # from celery import Celery, chain
 # from celery.result import AsyncResult
