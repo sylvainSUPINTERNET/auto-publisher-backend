@@ -1,7 +1,6 @@
 fastapi==0.115.5
 python-dotenv==1.0.1
-# moviepy==2.1.1
-moviepy==1.0.3
+moviepy==2.1.1
 yt-dlp==2024.11.18
 pika==1.3.2
 celery==5.4.0
