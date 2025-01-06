@@ -48,9 +48,17 @@ def groq_completion(transcription:TranscriptionWordAndSegments):
     return json_result
 
 """
-    4°) Create clip with cool effect
+    4°) Add subtilte to the video
+    srt to ass and add to the video
 """
-# TODO => pymovie mapping word with segment to highlight
+@app.task(queue="ffmpeg.subtitle")
+def ffmpeg_add_subtitle(json_result_completion:dict):
+    clips_timestamps = json.loads(json_result_completion["choices"][0]["message"]["content"])
+    logging.debug(json.dumps(clips_timestamps, indent=4))
+
+    # TODO
+
+    pass
 
 
 # from celery import Celery, chain

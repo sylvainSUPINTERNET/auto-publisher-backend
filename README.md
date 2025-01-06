@@ -25,10 +25,10 @@ fastapi run
 ```` bash 
 
 # Windows
-celery -A workers.app_worker worker --loglevel=debug -P solo -Q yt.download,whisper.transcribe,groq.completion
+celery -A workers.app_worker worker --loglevel=debug -P solo -Q yt.download,whisper.transcribe,groq.completion,ffmpeg.subtitle
 
 # UNIX
-celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.download,whisper.transcribe,groq.completion
+celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.download,whisper.transcribe,groq.completion,ffmpeg.subtitle
 
 # # use default queue ( celery named )
 # # Windows ( fork() is not working ... must use solo or another alternative )

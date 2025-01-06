@@ -1,77 +1,124 @@
 
-from domain.types.base_type import TranscriptionWordAndSegments
 import httpx
 import os
-import json
 import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(threadName)s - %(levelname)s - %(message)s')
 
+def chat_completions(transcription_srt:str)->dict:
+    prompt = f"""
+        Tu es un éditeur de vidéo pour créer des clips au format YouTube Shorts / TikTok pour maximiser les chances de viralité.
+        Pour cela, tu vas analyser un texte au format SRT et assembler des segments adjacents en clips d'une durée comprise entre 30 secondes et 60 secondes.
+        Tu renvoies uniquement le résultat au format JSON, sans aucune explication supplémentaire.
 
-# TODO => add user query ?
-def prompt_generate_clips(transcript_result:TranscriptionWordAndSegments) -> str:
+        Voici les critères de sélection :
+        1. Chaque clip doit regrouper des segments adjacents sans répétition.
+        2. La durée totale de chaque clip doit être calculée en additionnant les durées des segments.
+        3. Les clips doivent inclure tous les textes combinés dans le champ `text`.
+        4. Renvoie uniquement une liste JSON contenant les clips valides.
+        5. Si la durée de la somme des segments est inférieur à 30s le clip doit être ignoré.
+        6. Il faut prioriser le regroupement des segments qui ont une durée dont la somme est le plus proche de 60s.
 
-    general_task_definition = f"""
-        You are an expert video editor who can read video transcripts and perform video editing. Given a transcript with segments, your task is to identify all the conversations related to a user query. 
-        Follow these guidelines when choosing conversations. 
-        A group of continuous segments in the transcript is a conversation. 
-    """
+        Le format attendu est une liste JSON où chaque objet représente un clip avec les champs suivants :
+
+        - 'start': '00:00:00,000'
+        - 'end': '00:00:31,840',
+        - 'text': '<full_text_of_the_clip>'
     
-    guideline = f"""
-        Guidelines: 
-        1. The conversation should be relevant to the user query. The conversation should include more than one segment to provide context and continuity.
-        2. Include all the before and after segments needed in a conversation to make it complete. 
-        3. The conversation should not cut off in the middle of a sentence or idea. 
-        4. Choose multiple conversations from the transcript that are relevant to the user query. 
-        5. Match the start and end time of the conversations using the segment timestamps from the transcript. 
-        6. The conversations should be a direct part of the video and should not be out of context.
+        Le input srt est : {transcription_srt}
     """
-
-    output_format = f"""
-        Output format: {{ 'conversations': [{{'start': 's1', 'end': 'e1', 'text': 'x1}}, {{'start': 's2','end': 'e2', 'text': 'x2'}}] }}
-    """
-
-    transcript = f"""Transcript : {transcript_result['segments']}"""
-
-
-    return f"""
-    {general_task_definition}
-    {guideline}
-    {output_format}
-    {transcript}
-    """
-
-
-def chat_completions(transcription:TranscriptionWordAndSegments)->dict:
-    
     model:str = f"{os.getenv('GROQ_CHAT_COMPLETION_MODEL')}"
     role:str = "system"
-    prompt = f"{prompt_generate_clips(transcription)}"
 
     logging.debug(f"Prompt : {prompt}")
 
     try:
-            r = httpx.post(f"{os.getenv('GROQ_API_URL')}/chat/completions", 
-                json={
-                    "model":model,
-                    "messages":[{
-                        "role":role,
-                        "content":prompt
-                    }]
-                },
-                headers={"Authorization":f"Bearer {os.getenv('GROQ_TOKEN')}"
-            })
+        r = httpx.post(f"{os.getenv('GROQ_API_URL')}/chat/completions", 
+            json={
+                "model":model,
+                "messages":[{
+                    "role":role,
+                    "content":prompt
+                }]
+            },
+            headers={"Authorization":f"Bearer {os.getenv('GROQ_TOKEN')}"
+        })
 
-            if r.status_code != 200:
-                logging.error(f"Error code: {r.status_code} - {r.json()}")
-                return {"error":f"Error code: {r.status_code} - {r.json()}"}
-            
-            logging.debug(f"{r.json()}")
+        if r.status_code != 200:
+            logging.error(f"Error code: {r.status_code} - {r.json()}")
+            return {"error":f"Error code: {r.status_code} - {r.json()}"}
+        
+        logging.debug(f"{r.json()}")
 
-            return r.json()
+        return r.json()
     except Exception as e:
         logging.error(f"{e}")
         return {"error":f"{e}"}
+
+# # TODO => add user query ?
+# def prompt_generate_clips(transcript_result:TranscriptionWordAndSegments) -> str:
+
+#     general_task_definition = f"""
+#         You are an expert video editor who can read video transcripts and perform video editing. Given a transcript with segments, your task is to identify all the conversations related to a user query. 
+#         Follow these guidelines when choosing conversations. 
+#         A group of continuous segments in the transcript is a conversation. 
+#     """
+    
+#     guideline = f"""
+#         Guidelines: 
+#         1. The conversation should be relevant to the user query. The conversation should include more than one segment to provide context and continuity.
+#         2. Include all the before and after segments needed in a conversation to make it complete. 
+#         3. The conversation should not cut off in the middle of a sentence or idea. 
+#         4. Choose multiple conversations from the transcript that are relevant to the user query. 
+#         5. Match the start and end time of the conversations using the segment timestamps from the transcript. 
+#         6. The conversations should be a direct part of the video and should not be out of context.
+#     """
+
+#     output_format = f"""
+#         Output format: {{ 'conversations': [{{'start': 's1', 'end': 'e1', 'text': 'x1}}, {{'start': 's2','end': 'e2', 'text': 'x2'}}] }}
+#     """
+
+#     transcript = f"""Transcript : {transcript_result['segments']}"""
+
+
+#     return f"""
+#     {general_task_definition}
+#     {guideline}
+#     {output_format}
+#     {transcript}
+#     """
+
+
+# def chat_completions(transcription:TranscriptionWordAndSegments)->dict:
+    
+#     model:str = f"{os.getenv('GROQ_CHAT_COMPLETION_MODEL')}"
+#     role:str = "system"
+#     prompt = f"{prompt_generate_clips(transcription)}"
+
+#     logging.debug(f"Prompt : {prompt}")
+
+#     try:
+#             r = httpx.post(f"{os.getenv('GROQ_API_URL')}/chat/completions", 
+#                 json={
+#                     "model":model,
+#                     "messages":[{
+#                         "role":role,
+#                         "content":prompt
+#                     }]
+#                 },
+#                 headers={"Authorization":f"Bearer {os.getenv('GROQ_TOKEN')}"
+#             })
+
+#             if r.status_code != 200:
+#                 logging.error(f"Error code: {r.status_code} - {r.json()}")
+#                 return {"error":f"Error code: {r.status_code} - {r.json()}"}
+            
+#             logging.debug(f"{r.json()}")
+
+#             return r.json()
+#     except Exception as e:
+#         logging.error(f"{e}")
+#         return {"error":f"{e}"}
 
 
 
