@@ -19,6 +19,7 @@ fastapi run
 
 ````
 
+
 # Start workers
 
 ```` bash 
@@ -29,13 +30,13 @@ celery -A workers.app_worker worker --loglevel=debug -P solo -Q yt.download,whis
 # UNIX
 celery -A workers.app_worker worker --loglevel=debug --concurrency=8 -Q yt.download,whisper.transcribe,groq.completion
 
-
 # # use default queue ( celery named )
 # # Windows ( fork() is not working ... must use solo or another alternative )
 # cd workers ;; celery -A app_worker worker --loglevel=debug -P solo
 
 # # Feel free to add queues names instead of using default celery  ( define at @task decorator)
 # cd workers ;; celery -A app_worker worker --loglevel=debug -P solo -Q EXAMPLE_Q
+
 
 
 # UNIX
