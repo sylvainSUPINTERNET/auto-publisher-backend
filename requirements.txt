@@ -7,3 +7,4 @@ celery==5.4.0
 flower==2.0.1
 openai==1.57.4
 pytest==8.3.4
+pysubs2==1.8.0
