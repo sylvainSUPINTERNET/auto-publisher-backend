@@ -1,11 +1,24 @@
 import json
-from domain.services.worker_groq.prompt_clip_service import prompt_generate_clips
+# from domain.services.worker_groq.prompt_clip_service import prompt_generate_clips
 
-def test_build_prompt():
-    with open("tests/fixtures/transcription_segments_words.json") as f:
-        transcription_verbose_fixture = json.load(f)
+def test_hero():
+
+    result_completion_json = None
+    with open("tests/fixtures/result_completion.json") as f:
+        result_completion_json = json.load(f)
+
+    result_completion_srt = None
+    with open("tests/fixtures/result_completion.srt", 'r', encoding="utf-8") as result_completion_srt:
+        for l in result_completion_srt:
+            print(l)
+
+
+    print(result_completion_srt)
+# def test_build_prompt():
+#     with open("tests/fixtures/transcription_segments_words.json") as f:
+#         transcription_verbose_fixture = json.load(f)
         
-        prompt_generate_clips(transcript_result=transcription_verbose_fixture)
+#         prompt_generate_clips(transcript_result=transcription_verbose_fixture)
 
 
 

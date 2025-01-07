@@ -18,6 +18,7 @@ def chat_completions(transcription_srt:str)->dict:
         4. Renvoie uniquement une liste JSON contenant les clips valides.
         5. Si la durée de la somme des segments est inférieur à 30s le clip doit être ignoré.
         6. Il faut prioriser le regroupement des segments qui ont une durée dont la somme est le plus proche de 60s.
+        7. Propose maximum 3 clips. Tu gardes que les plus pertinents pour la viralité et qui se rapproche le plus de 60s.
 
         Le format attendu est une liste JSON où chaque objet représente un clip avec les champs suivants :
 

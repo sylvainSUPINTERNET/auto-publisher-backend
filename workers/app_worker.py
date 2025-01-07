@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from domain.services.worker_groq.prompt_clip_service import chat_completions
 from domain.services.worker_openai.transcribe_service import transcribe
 from domain.services.worker_yt_download.yt_task_service import download_yt_video
-from domain.types.base_type import TranscriptionWordAndSegments
 import logging
 import json
 
