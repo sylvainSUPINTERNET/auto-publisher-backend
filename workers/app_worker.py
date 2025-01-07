@@ -32,7 +32,7 @@ def yt_download_video_task(link):
 """
 @app.task(queue="whisper.transcribe")
 def whisper_transcribe(video_uuid:str):
-    transcription:TranscriptionWordAndSegments = transcribe(video_uuid)
+    transcription = transcribe(video_uuid)
     return transcription
 
 
@@ -40,31 +40,27 @@ def whisper_transcribe(video_uuid:str):
     3° ) task must be called, generate prompt clips from the transcription provided
 """
 @app.task(queue="groq.completion")
-def groq_completion(transcription:TranscriptionWordAndSegments):
+def groq_completion(transcription):
     json_result:dict = chat_completions(transcription)
 
     logging.debug(json.dumps(json_result, indent=4))
 
-    return json_result
+    return {"json_result": json_result, "transcription_srt": transcription}
 
 """
     4°) Add subtilte to the video
     srt to ass and add to the video
 """
 @app.task(queue="ffmpeg.subtitle")
-def ffmpeg_add_subtitle(json_result_completion:dict):
-    clips_timestamps = json.loads(json_result_completion["choices"][0]["message"]["content"])
+def ffmpeg_add_subtitle(completion_result:dict):
+    clips_timestamps = json.loads(completion_result["json_result"]["choices"][0]["message"]["content"])
     logging.debug(json.dumps(clips_timestamps, indent=4))
 
-    # TODO convert this into .ass format
-        # {
-        # "start": "00:00:00,000",
-        # "end": "00:00:31,840",
-        # "text": "Je pense qu'il aurait d\u00fb bien mesurer ce que signifiait demander une autre nationalit\u00e9, parce que nous sommes fiers d'\u00eatre fran\u00e7ais. C'est tr\u00e8s choqu\u00e9 que l'on puisse tenter d'obtenir une nationalit\u00e9 uniquement pour d\u00e9fendre des int\u00e9r\u00eats financiers. L'\u00c9tat fran\u00e7ais l'a beaucoup aid\u00e9 au cours des ann\u00e9es, notamment en lui ouvrant toute une s\u00e9rie de march\u00e9s \u00e0 l'\u00e9tranger, je vois qu'il n'est pas bien reconnaissant. Cet homme n'a qu'une obsession, c'est de d\u00e9manteler ses entreprises, de les diviser en morceaux. Qu'est-ce qu'il se passe \u00e0 Carrefour ? On supprime des emplois, donc je fais la comparaison et je demande aux personnes de faire le parall\u00e8le entre cet homme qui veut \u00e9chapper au fisc et aux salari\u00e9s de Carrefour qui perdent leur emploi, il y a de l'immoralit\u00e9 dans l'air."
-        #     }
-        # ]
+    print(completion_result["transcription_srt"])
 
-    # TODO then "fusion" into video with ffmpeg for subtitle
+    # find "between" using json and srt 
+    # use start and end to cut the clip and fusion the srt found ( using ffmpeg)
+    
     pass
 
 
