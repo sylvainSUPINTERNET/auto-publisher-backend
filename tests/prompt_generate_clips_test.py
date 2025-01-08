@@ -1,7 +1,10 @@
 import json
+import re
 # from domain.services.worker_groq.prompt_clip_service import prompt_generate_clips
 
 def test_hero():
+
+
 
     result_completion_json = None
     with open("tests/fixtures/result_completion.json") as f:
@@ -10,10 +13,17 @@ def test_hero():
     result_completion_srt = None
     with open("tests/fixtures/result_completion.srt", 'r', encoding="utf-8") as result_completion_srt:
         for l in result_completion_srt:
-            print(l)
+            match = re.match(pattern="(.*)(?:-->)(.*)", string=l)
+            if match :
+                start = match.group(1)
+                end = match.group(2)
+                print(start, end)
 
 
-    print(result_completion_srt)
+    # print(result_completion_srt)
+
+
+
 # def test_build_prompt():
 #     with open("tests/fixtures/transcription_segments_words.json") as f:
 #         transcription_verbose_fixture = json.load(f)
