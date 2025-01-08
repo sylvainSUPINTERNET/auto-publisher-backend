@@ -3,12 +3,14 @@ import re
 # from domain.services.worker_groq.prompt_clip_service import prompt_generate_clips
 
 def test_hero():
-
-
+    
+    input_start="00:00:13,120"
+    input_end="00:00:31,840"
 
     result_completion_json = None
     with open("tests/fixtures/result_completion.json") as f:
         result_completion_json = json.load(f)
+    print(result_completion_json)
 
     result_completion_srt = None
     with open("tests/fixtures/result_completion.srt", 'r', encoding="utf-8") as result_completion_srt:
