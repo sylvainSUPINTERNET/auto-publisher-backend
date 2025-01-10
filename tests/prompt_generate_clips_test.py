@@ -1,6 +1,27 @@
 import json
 import re
+from datetime import datetime, timedelta
+
 # from domain.services.worker_groq.prompt_clip_service import prompt_generate_clips
+
+
+def convert_srt_timestamp_to_datetime(srt_timestamp):
+    """
+    Convertit un timestamp au format SRT 'HH:MM:SS,SSS' en un objet datetime.
+    Args:
+        srt_timestamp (str): Le timestamp au format SRT (par exemple '00:00:13,120').
+    
+    Returns:
+        datetime: Un objet datetime correspondant au timestamp.
+    """
+    srt_timestamp = srt_timestamp.replace(',', '.')
+    return datetime.strptime(srt_timestamp, "%H:%M:%S.%f")   
+
+
+def test_timestamp_conversion():
+    srt_timestamp = "00:00:13,120"
+    expected_datetime = datetime(1900, 1, 1, 0, 0, 13, 120000)
+    assert convert_srt_timestamp_to_datetime(srt_timestamp) == expected_datetime
 
 def test_hero():
     
@@ -10,16 +31,20 @@ def test_hero():
     result_completion_json = None
     with open("tests/fixtures/result_completion.json") as f:
         result_completion_json = json.load(f)
-    print(result_completion_json)
+    # print(result_completion_json)
 
     result_completion_srt = None
     with open("tests/fixtures/result_completion.srt", 'r', encoding="utf-8") as result_completion_srt:
         for l in result_completion_srt:
             match = re.match(pattern="(.*)(?:-->)(.*)", string=l)
             if match :
-                start = match.group(1)
-                end = match.group(2)
-                print(start, end)
+                print(match.group(1), match.group(2))
+                # start = convert_srt_timestamp_to_datetime(match.group(1))
+                # end = convert_srt_timestamp_to_datetime(match.group(2))
+                # if start == input_start and end <= input_end:
+                #     print(start, end)
+                #     break
+                # print(start, end)
 
 
     # print(result_completion_srt)

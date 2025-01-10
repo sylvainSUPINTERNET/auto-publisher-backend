@@ -8,3 +8,4 @@ flower==2.0.1
 openai==1.57.4
 pytest==8.3.4
 pysubs2==1.8.0
+srt==3.5.3
