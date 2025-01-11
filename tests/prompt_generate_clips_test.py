@@ -1,50 +1,51 @@
 import json
 import re
 from datetime import datetime, timedelta
+import srt
 
 # from domain.services.worker_groq.prompt_clip_service import prompt_generate_clips
 
-
-def convert_srt_timestamp_to_datetime(srt_timestamp):
-    """
-    Convertit un timestamp au format SRT 'HH:MM:SS,SSS' en un objet datetime.
-    Args:
-        srt_timestamp (str): Le timestamp au format SRT (par exemple '00:00:13,120').
-    
-    Returns:
-        datetime: Un objet datetime correspondant au timestamp.
-    """
-    srt_timestamp = srt_timestamp.replace(',', '.')
-    return datetime.strptime(srt_timestamp, "%H:%M:%S.%f")   
-
-
-def test_timestamp_conversion():
-    srt_timestamp = "00:00:13,120"
-    expected_datetime = datetime(1900, 1, 1, 0, 0, 13, 120000)
-    assert convert_srt_timestamp_to_datetime(srt_timestamp) == expected_datetime
-
 def test_hero():
-    
-    input_start="00:00:13,120"
-    input_end="00:00:31,840"
 
     result_completion_json = None
     with open("tests/fixtures/result_completion.json") as f:
         result_completion_json = json.load(f)
-    # print(result_completion_json)
 
-    result_completion_srt = None
+    subtitles = None
     with open("tests/fixtures/result_completion.srt", 'r', encoding="utf-8") as result_completion_srt:
-        for l in result_completion_srt:
-            match = re.match(pattern="(.*)(?:-->)(.*)", string=l)
-            if match :
-                print(match.group(1), match.group(2))
-                # start = convert_srt_timestamp_to_datetime(match.group(1))
-                # end = convert_srt_timestamp_to_datetime(match.group(2))
-                # if start == input_start and end <= input_end:
-                #     print(start, end)
-                #     break
-                # print(start, end)
+        subtitles = list(srt.parse(result_completion_srt))
+
+    for sub_obj in result_completion_json:
+        start_at = srt.srt_timestamp_to_timedelta(sub_obj["start"])
+        end_at = srt.srt_timestamp_to_timedelta(sub_obj["end"])
+        print(f"SEGMENT START : {start_at}")
+        for subtitle in subtitles:
+            if subtitle.start in (start_at, end_at) or subtitle.end in (start_at, end_at):
+                print(f"  {subtitle.content}")
+        print(f"SEGMENT END : {end_at}")
+
+
+        # start_at = srt.srt_timestamp_to_timedelta(sub_obj["start"])
+        # end_at = srt.srt_timestamp_to_timedelta(sub_obj["end"])
+        # for subtitle in subtitles:
+        #     if subtitle >= start_at or subtitle <= end_at:
+        #         print(subtitle.content)
+        #     print(" ========= ")
+
+    # for subtitle in subtitles:
+        # print(f"Start: {subtitle.start}, End: {subtitle.end}, Text: {subtitle.content}")
+
+
+        # for l in result_completion_srt:
+        #     match = re.match(pattern="(.*)(?:-->)(.*)", string=l)
+        #     if match :
+        #         print(match.group(1), match.group(2))
+        #         # start = convert_srt_timestamp_to_datetime(match.group(1))
+        #         # end = convert_srt_timestamp_to_datetime(match.group(2))
+        #         # if start == input_start and end <= input_end:
+        #         #     print(start, end)
+        #         #     break
+        #         # print(start, end)
 
 
     # print(result_completion_srt)
