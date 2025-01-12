@@ -3,8 +3,12 @@ import re
 from datetime import datetime, timedelta
 import srt
 import pysubs2
+import ffmpeg
 
 def test_hero():
+
+    video = "downloads/0f998d04-49c6-4961-910a-32f4bdb685d4.mp4"
+
 
     result_completion_json = None
     with open("tests/fixtures/result_completion.json") as f:
@@ -32,10 +36,9 @@ def test_hero():
         ass_str_list.append(subs.to_string("ass"))
     
 
-    for a in ass_str_list:
-        print(a)
+    for ass_str in ass_str_list:
+        print(ass_str)
         print("========")
-
 
 def timestr_to_ms(timestr):
     """

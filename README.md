@@ -1,5 +1,16 @@
 # Start backend 
 
+# Install ffmpeg
+
+```` powershell
+choco install ffmpeg
+````
+
+```` bash 
+sudo apt install ffmpeg
+````
+
+
 ```` bash
 
 # conda or venv
