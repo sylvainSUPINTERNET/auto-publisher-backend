@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 from dotenv import load_dotenv
 
+from app.resources.ytb import dl_resource
 from infrastructure.rabbitmq_conn import RabbitMqClient
 
 load_dotenv()
@@ -15,12 +16,12 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(threadName)s - %
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
-        logging.info("Get rabbitmq connection ...")
-        rabbitmq_client = RabbitMqClient()
+        # logging.info("Get rabbitmq connection ...")
+        # rabbitmq_client = RabbitMqClient()
         logging.info(f"Starting the application")
         yield
     finally:
-        rabbitmq_client.close_conn()
+        # rabbitmq_client.close_conn()
         logging.info("Shutting down the application")
 
 app = FastAPI(title="auto-publisher-backend", version="0.1.0", root_path="/api/v1", lifespan=lifespan)
@@ -38,7 +39,7 @@ app.add_middleware(
 )
 
 # Register your routes
-app.include_router(ai_resource.router)
-app.include_router(link_resource.router)
-
+# app.include_router(ai_resource.router)
+# app.include_router(link_resource.router)
+app.include_router(dl_resource.router)
 
