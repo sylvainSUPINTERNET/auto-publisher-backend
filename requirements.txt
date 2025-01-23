@@ -11,3 +11,4 @@ pysubs2==1.8.0
 srt==3.5.3
 ffmpeg-python==0.2.0
 fastapi==0.115.6
+boto3==1.36.5

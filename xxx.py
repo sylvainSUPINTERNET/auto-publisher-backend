@@ -1,9 +1,29 @@
-import ffmpeg
-import uuid
+import os
+import boto3
+from dotenv import load_dotenv
+
+load_dotenv()
+
+s3 = boto3.client(
+    service_name ="s3",
+    endpoint_url = f"{os.getenv('CLOUDFLARE_R2_ENDPOINT_URL')}",
+    aws_access_key_id = f"{os.getenv('CLOUDFLARE_R2_ACCESS_KEY')}",
+    aws_secret_access_key = f"{os.getenv('CLOUDFLARE_R2_SECRET_KEY')}",
+    region_name=f"{os.getenv('CLOUDFLARE_R2_REGION')}", # Must be one of: wnam, enam, weur, eeur, apac, auto
+)
 
 
-video = "downloads/0f998d04-49c6-4961-910a-32f4bdb685d4.mp4"
-output = "outputs/"
+# Get object information
+object_information = s3.head_object(
+                        Bucket=f"{os.getenv('CLOUDFLARE_R2_BUCKET_NAME')}",
+                        Key="short-button.jpg")
+print(object_information)
 
+# # Upload/Update single file
+# s3.upload_fileobj(io.BytesIO(file_content), <R2_BUCKET_NAME>, <FILE_KEY_NAME>)
 
-ffmpeg.input(video).output(f"{output}{str(uuid.uuid4())}.mp4", vf=f"subtitles=subtitles/test1.ass", ss="00:00:27.56", to="00:01:07.14").run()
+# # Delete object
+# delete = s3.delete_object(Bucket=f"{os.getenv('CLOUDFLARE_R2_BUCKET_NAME')}",
+#                          Key="short-button.jpg")
+
+# print(delete)
