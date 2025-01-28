@@ -37,6 +37,8 @@ async def links(linkData: LinkDto):
     # TODO : download as "file" and send the byte 
     file_name = "Se lever tôt ne te rendra pas meilleur (et c'est tant mieux).webm"
 
+
+    # TODO : compress video before sending it to the client ( without reducing the quality )
     try:    
         with s3.head_object(Bucket=f"{os.getenv('CLOUDFLARE_R2_BUCKET_NAME')}", Key=f"{file_name}") as obj:
             # start worker (file is already in bucket)
