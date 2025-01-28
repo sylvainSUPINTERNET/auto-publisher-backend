@@ -39,6 +39,7 @@ async def links(linkData: LinkDto):
 
 
     # TODO : compress video before sending it to the client ( without reducing the quality )
+    # TODO : upload thumbnail ?
     try:    
         with s3.head_object(Bucket=f"{os.getenv('CLOUDFLARE_R2_BUCKET_NAME')}", Key=f"{file_name}") as obj:
             # start worker (file is already in bucket)
